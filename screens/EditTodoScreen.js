@@ -1,6 +1,5 @@
 import storage from "../lib/storage";
 import TodoForm from "../components/TodoForm";
-import { useEffect } from "react";
 
 function EditTodoScreen({ navigation, route }) {
   const handleEditTodo = async (listTodos, value) => {

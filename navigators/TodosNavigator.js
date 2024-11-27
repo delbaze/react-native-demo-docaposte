@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import TodosListScreen from "../screens/TodosListScreen";
 import CreateTodoScreen from "../screens/CreateTodoScreen";
+import EditTodoScreen from "../screens/EditTodoScreen";
 const Stack = createStackNavigator();
 
 function TodosNavigator() {
@@ -11,7 +12,7 @@ function TodosNavigator() {
     >
       <Stack.Screen name="TodosList" component={TodosListScreen} />
       <Stack.Screen name="CreateTodo" component={CreateTodoScreen} />
-      {/* <Stack.Screen name="EditTodo"/> */}
+      <Stack.Screen name="EditTodo" component={EditTodoScreen} />
       {/* <Stack.Screen name="ViewTodo"/> */}
     </Stack.Navigator>
   );

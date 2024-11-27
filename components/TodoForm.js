@@ -1,22 +1,22 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Button, Input, Icon } from "@rneui/themed";
 import { createRef, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import storage from "../lib/storage";
 
-function TodoForm({ title, action }) {
+function TodoForm({ title, action, index }) {
   const navigation = useNavigation();
 
   const input = createRef();
   const [state, setState] = useState({
-    field: "",
+    value: "",
   });
   const goBack = () => {
     navigation.goBack();
   };
 
   const handleChange = (text) => {
-    setState({ ...state, field: text });
+    setState({ ...state, value: text });
   };
 
   const handleGetTodos = async () => {
@@ -26,13 +26,23 @@ function TodoForm({ title, action }) {
 
   const callAction = async () => {
     const listTodos = await handleGetTodos();
-    action(listTodos, state.field);
-    setState({ field: "" });
+    action(listTodos, state.value);
+    setState({ value: "" });
   };
 
+  const findOneTodo = async () => {
+    const listTodos = await handleGetTodos();
+    const todo = listTodos[index];
+    setState({ ...state, value: todo.value });
+  };
   useEffect(() => {
-    setTimeout(() => input.current.focus(), 400);
-  }, []);
+    setTimeout(() => {
+      input.current.focus();
+      if (index !== null) {
+        findOneTodo();
+      }
+    }, 400);
+  }, [index]);
 
   return (
     <View style={styles.main}>
@@ -42,7 +52,7 @@ function TodoForm({ title, action }) {
         placeholder="Premier input"
         leftIcon={<Icon name="rocket" size={24} color="black" />}
         // onSubmitEditing={handleSubmit}
-        value={state.field}
+        value={state.value}
       />
       <View style={styles.buttons}>
         <Button
@@ -53,7 +63,7 @@ function TodoForm({ title, action }) {
           containerStyle={{ width: 150, marginHorizontal: 10 }}
         />
         <Button
-          disabled={!state.field}
+          disabled={!state.value}
           title={title}
           type="outline"
           raised

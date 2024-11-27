@@ -1,21 +1,28 @@
 import storage from "../lib/storage";
 import TodoForm from "../components/TodoForm";
+import { useEffect } from "react";
 
-function EditTodoScreen({ navigation }) {
+function EditTodoScreen({ navigation, route }) {
   const handleEditTodo = async (listTodos, value) => {
-    const oldList = listTodos;
-    
-    // Il va falloir faire ce qu'il faut pour Éditer
+    const index = route.params.index;
+    const todo = listTodos[index];
+    todo.value = value;
 
-    // await storage.save({
-    //   key: "todosList",
-    //   data: [...oldList, { status: "undone", value }],
-    // });
+    await storage.save({
+      key: "todosList",
+      data: listTodos,
+    });
 
     navigation.goBack();
   };
 
-  return <TodoForm title={"Éditer"} action={handleEditTodo} />;
+  return (
+    <TodoForm
+      title={"Éditer"}
+      action={handleEditTodo}
+      index={route.params.index ?? null}
+    />
+  );
 }
 
 export default EditTodoScreen;

@@ -3,6 +3,7 @@ import storage from "../lib/storage";
 export const Context = createContext({
   preferences: {
     showTodoDone: true,
+    imageFile: ""
   },
   setPreferences: () => {},
   changePreferences: () => {},

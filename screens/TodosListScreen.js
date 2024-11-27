@@ -4,6 +4,7 @@ import storage from "../lib/storage";
 import { useState, useEffect } from "react";
 import TodosList from "../components/TodosList";
 
+
 function TodosListScreen({ navigation }) {
   // navigation.navigate("")
   const [list, setList] = useState([]);
@@ -85,7 +86,7 @@ function TodosListScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   main: {
-    padding:10,
+    padding: 10,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

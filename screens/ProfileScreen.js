@@ -1,6 +1,7 @@
 import { Avatar, Icon, ListItem, Switch } from "@rneui/themed";
 import { StyleSheet, View } from "react-native";
 import { usePreferences } from "../contextes/SettingsProvider";
+import * as ImagePicker from "expo-image-picker";
 
 function ProfileScreen() {
   const settings = usePreferences();
@@ -9,14 +10,53 @@ function ProfileScreen() {
     const preferences = { ...settings.preferences, showTodoDone: value };
     settings.changePreferences(preferences);
   };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+      allowsMultipleSelection: false,
+    });
+    console.log("result", result);
+    console.log("uri", result.assets[0].uri);
+    if (!result.canceled) {
+      const preferences = {
+        ...settings.preferences,
+        imageFile: result.assets[0].uri,
+      };
+      settings.changePreferences(preferences);
+    }
+  };
   return (
     <View style={styles.main}>
-      <Avatar
-        rounded
-        containerStyle={{ backgroundColor: "gray" }}
-        icon={{ type: "ionicon", name: "person", color: "whitesmoke" }}
-        size={150}
-      />
+      {settings.preferences.imageFile ? (
+        <Avatar
+          rounded
+          containerStyle={{ backgroundColor: "gray" }}
+          source={{ uri: settings.preferences.imageFile }}
+          size={150}
+        >
+          <Avatar.Accessory
+            size={48}
+            style={{ backgroundColor: "#ec3" }}
+            onPress={pickImage}
+          />
+        </Avatar>
+      ) : (
+        <Avatar
+          rounded
+          containerStyle={{ backgroundColor: "gray" }}
+          icon={{ type: "ionicon", name: "person", color: "whitesmoke" }}
+          size={150}
+        >
+          <Avatar.Accessory
+            size={48}
+            style={{ backgroundColor: "#ec3" }}
+            onPress={pickImage}
+          />
+        </Avatar>
+      )}
       <View style={styles.itemsList}>
         <ListItem bottomDivider>
           <Icon type="ionicon" name="settings" />

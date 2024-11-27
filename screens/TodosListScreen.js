@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet } from "react-native";
-import { FAB } from "@rneui/themed";
+import { View, StyleSheet } from "react-native";
+import { FAB, Text } from "@rneui/themed";
 import storage from "../lib/storage";
 import { useState, useEffect } from "react";
 import TodosList from "../components/TodosList";
@@ -45,16 +45,13 @@ function TodosListScreen({ navigation }) {
       // Si tout est identique
       return 0;
     });
-    const deleteTodo = async (index) => {
-      const todosList = list.map((l) => Object.assign({}, l));
-      todosList.splice(index, 1);
-      const sortedList = listSorted(todosList);
-      setList(sortedList);
-      await storage.save({key: "todosList", data: sortedList})
-
-
-
-    }
+  const deleteTodo = async (index) => {
+    const todosList = list.map((l) => Object.assign({}, l));
+    todosList.splice(index, 1);
+    const sortedList = listSorted(todosList);
+    setList(sortedList);
+    await storage.save({ key: "todosList", data: sortedList });
+  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -67,8 +64,15 @@ function TodosListScreen({ navigation }) {
 
   return (
     <View style={styles.main}>
-      <Text>Ici il y aura les todos</Text>
-      <TodosList list={list} changeCheckedStatus={changeCheckedStatus} deleteTodo={deleteTodo}/>
+      {list.length === 0 ? (
+        <Text h4>Ajoutez une todo...</Text>
+      ) : (
+        <TodosList
+          list={list}
+          changeCheckedStatus={changeCheckedStatus}
+          deleteTodo={deleteTodo}
+        />
+      )}
       <FAB
         placement="right"
         color="#3a3a3a"
@@ -81,6 +85,7 @@ function TodosListScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   main: {
+    padding:10,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

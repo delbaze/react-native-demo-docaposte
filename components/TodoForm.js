@@ -53,6 +53,7 @@ function TodoForm({ title, action }) {
           containerStyle={{ width: 150, marginHorizontal: 10 }}
         />
         <Button
+          disabled={!state.field}
           title={title}
           type="outline"
           raised

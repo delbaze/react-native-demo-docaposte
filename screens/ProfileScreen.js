@@ -1,15 +1,13 @@
 import { Avatar, Icon, ListItem, Switch } from "@rneui/themed";
 import { StyleSheet, View } from "react-native";
 import { usePreferences } from "../contextes/SettingsProvider";
-import storage from "../lib/storage";
 
 function ProfileScreen() {
   const settings = usePreferences();
 
   const handleChange = async (value) => {
     const preferences = { ...settings.preferences, showTodoDone: value };
-    settings.setPreferences(preferences);
-    await storage.save({ key: "preferences", data: preferences });
+    settings.changePreferences(preferences);
   };
   return (
     <View style={styles.main}>

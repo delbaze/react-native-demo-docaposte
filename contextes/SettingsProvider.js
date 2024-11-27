@@ -5,6 +5,7 @@ export const Context = createContext({
     showTodoDone: true,
   },
   setPreferences: () => {},
+  changePreferences: () => {},
 });
 
 export function usePreferences() {
@@ -20,11 +21,19 @@ function SettingsProvider({ children }) {
     const prefsPersisted = await storage.load({ key: "preferences" });
     setPreferences(prefsPersisted);
   };
+
+  const changePreferences = async (preferenceObjet) => {
+    setPreferences(preferenceObjet);
+    await storage.save({ key: "preferences", data: preferenceObjet });
+  };
+
   useEffect(() => {
     getPreferences();
   }, []);
   return (
-    <Context.Provider value={{ preferences, setPreferences }}>
+    <Context.Provider
+      value={{ preferences, setPreferences, changePreferences }}
+    >
       {children}
     </Context.Provider>
   );

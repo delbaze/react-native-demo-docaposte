@@ -45,6 +45,16 @@ function TodosListScreen({ navigation }) {
       // Si tout est identique
       return 0;
     });
+    const deleteTodo = async (index) => {
+      const todosList = list.map((l) => Object.assign({}, l));
+      todosList.splice(index, 1);
+      const sortedList = listSorted(todosList);
+      setList(sortedList);
+      await storage.save({key: "todosList", data: sortedList})
+
+
+
+    }
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -58,7 +68,7 @@ function TodosListScreen({ navigation }) {
   return (
     <View style={styles.main}>
       <Text>Ici il y aura les todos</Text>
-      <TodosList list={list} changeCheckedStatus={changeCheckedStatus} />
+      <TodosList list={list} changeCheckedStatus={changeCheckedStatus} deleteTodo={deleteTodo}/>
       <FAB
         placement="right"
         color="#3a3a3a"

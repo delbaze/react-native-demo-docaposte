@@ -4,12 +4,12 @@ import { createRef, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import storage from "../lib/storage";
 
-function TodoForm({ title, action, index }) {
+function TodoForm({ title, action, todo }) {
   const navigation = useNavigation();
 
   const input = createRef();
   const [state, setState] = useState({
-    value: "",
+    value: todo?.value || "",
   });
   const goBack = () => {
     navigation.goBack();
@@ -19,30 +19,17 @@ function TodoForm({ title, action, index }) {
     setState({ ...state, value: text });
   };
 
-  const handleGetTodos = async () => {
-    const result = await storage.load({ key: "todosList" });
-    return result;
-  };
-
   const callAction = async () => {
-    const listTodos = await handleGetTodos();
-    action(listTodos, state.value);
+    // const listTodos = await handleGetTodos();
+    action(state.value);
     setState({ value: "" });
   };
 
-  const findOneTodo = async () => {
-    const listTodos = await handleGetTodos();
-    const todo = listTodos[index];
-    setState({ ...state, value: todo.value });
-  };
   useEffect(() => {
     setTimeout(() => {
       input.current.focus();
-      if (index !== null) {
-        findOneTodo();
-      }
     }, 400);
-  }, [index]);
+  }, []);
 
   return (
     <View style={styles.main}>

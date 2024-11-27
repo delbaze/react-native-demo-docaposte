@@ -6,9 +6,16 @@ function TodosList({ list, changeCheckedStatus }) {
   return (
     <View style={{ flex: 1, width: 400 }}>
       {list.map((l, i) => (
-        <ListItem key={i} bottomDivider>
+        <ListItem
+          containerStyle={{
+            backgroundColor: l.status === "done" ? "#ececec" : "#fff",
+          }}
+          key={i}
+          bottomDivider
+        >
           <ListItem.CheckBox
             checked={l.status === "done"}
+            // disabled={l.status === "done"}
             onPress={() => changeCheckedStatus(i)}
           />
           <ListItem.Content>

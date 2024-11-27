@@ -35,6 +35,7 @@ function TodosListScreen({ navigation }) {
         return 1;
       }
 
+      //tri alphabétique
       if (a.value < b.value) {
         return -1;
       } else if (a.value > b.value) {
